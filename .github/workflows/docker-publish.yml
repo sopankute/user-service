@@ -43,27 +43,27 @@ jobs:
           docker push sopankute87/user-service:latest
 
       # Step 6: Deploy the application to the VPS server
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@master  # Opens SSH connection to your VPS | Executes commands remotely
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-          # Pull the latest version Docker image from Docker Hub
-            docker pull sopankute87/user-service:latest
-
-          # Stop and remove the old container if it exists, Prevents port conflicts.
-            docker rm -f user-service || echo "No container named user-service found."
-
-          # Remove unused dangling Docker images to free space on VPS
-            docker images -f "dangling=true" -q | xargs --no-run-if-empty docker rmi
-
-          # Run a new container using the latest image
-            docker run -d \
-            -p 8081:8081 \                      # Map host → container port
-            --env-file /root/sopankute/.env \    # Load environment variables
-            --name user-service \               # Container name
-            sopankute87/user-service:latest
+#      - name: Deploy to VPS
+#        uses: appleboy/ssh-action@master  # Opens SSH connection to your VPS | Executes commands remotely
+#        with:
+#          host: ${{ secrets.VPS_HOST }}
+#          username: ${{ secrets.VPS_USERNAME }}
+#          key: ${{ secrets.VPS_SSH_KEY }}
+#          script: |
+#          # Pull the latest version Docker image from Docker Hub
+#            docker pull sopankute87/user-service:latest
+#
+#          # Stop and remove the old container if it exists, Prevents port conflicts.
+#            docker rm -f user-service || echo "No container named user-service found."
+#
+#          # Remove unused dangling Docker images to free space on VPS
+#            docker images -f "dangling=true" -q | xargs --no-run-if-empty docker rmi
+#
+#          # Run a new container using the latest image
+#            docker run -d \
+#            -p 8081:8081 \                      # Map host → container port
+#            --env-file /root/sopankute/.env \    # Load environment variables
+#            --name user-service \               # Container name
+#            sopankute87/user-service:latest
 
 
