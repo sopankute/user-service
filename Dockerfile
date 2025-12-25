@@ -1,0 +1,28 @@
+# Stage 1: build
+# Start with a Maven image that includes JDK 21
+# Uses Maven + JDK 21
+# Named stage 'build'
+FROM maven:3.9.8-amazoncorretto-21 AS build
+
+# To copy source code and pom.xml file to /app folder
+# Sets working directory '/app' inside container
+# Copies Maven config and source code
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+
+# Build JAR with maven inside container
+RUN mvn package -DskipTests
+
+#Stage 2: create image
+# Start with Amazon Correto JDK 21
+FROM amazoncorretto:21.0.4
+
+# Set working folder to App and copy complied file from above step
+# Copies JAR from build stage
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8081
+
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
