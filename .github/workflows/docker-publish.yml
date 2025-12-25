@@ -36,7 +36,7 @@ jobs:
 
       # Step 5: Build Docker image and push it to Docker Hub
       - name: Build and push Docker image
-        working-directory: "user-service"
+#        working-directory: "user-service"
         run: |
           # Build Docker Image Using Dockerfile from directory(.)
                docker build -t sopankute87/user-service:latest .
