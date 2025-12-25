@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "user-service/**"
 
 # Having one job: 'build', As A workflow can have multiple jobs.
 jobs:
@@ -64,7 +62,7 @@ jobs:
           # Run a new container using the latest image
             docker run -d \
             -p 8081:8081 \                      # Map host → container port
-            --env-file /root/devhuynh/.env \    # Load environment variables
+            --env-file /root/sopankute/.env \    # Load environment variables
             --name user-service \               # Container name
             sopankute87/user-service:latest
 
